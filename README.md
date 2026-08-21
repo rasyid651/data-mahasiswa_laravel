@@ -1,58 +1,283 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 CRUD Laravel — Migrasi PHP Native ke Laravel 13
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Project Praktik Kerja Lapangan (PKL) — Migrasi aplikasi CRUD berbasis web dari **PHP Native (prosedural)** ke framework **Laravel 13** dengan seluruh fitur tetap berfungsi, plus deployment ke hosting publik.
 
-## About Laravel
+🌐 **Live Demo:** [https://crud-rasyid.infinityfree.me](https://crud-rasyid.infinityfree.me)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=flat-square&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=flat-square&logo=php)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql)
+![AdminLTE](https://img.shields.io/badge/UI-AdminLTE%203-007BFF?style=flat-square&logo=bootstrap)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 📖 Tentang Project
 
-## Learning Laravel
+Project ini merupakan **migrasi penuh** dari aplikasi CRUD yang sebelumnya dibangun dengan PHP Native (query `mysqli` prosedural, session `$_SESSION`, dan file terpisah per halaman) menjadi aplikasi **Laravel 13** dengan arsitektur MVC modern:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| PHP Native (Sebelum) | Laravel 13 (Sesudah) |
+|---|---|
+| `mysqli_query()` manual | **Eloquent ORM** (`Barang::all()`, `where()`, `paginate()`) |
+| `$_SESSION['login']` | **Authentication** `Auth::attempt()` + `Auth::user()` |
+| Pengecekan level manual di tiap file | **Custom Middleware** `check.level` |
+| `header("Location: ...")` | **Routing** + `redirect()->route()` |
+| `password_hash()` manual | **`Hash::make()`** (bcrypt otomatis) |
+| PHPMailer manual | **Laravel Mail** (SMTP Gmail) |
+| Include `header.php` / `footer.php` | **Blade Template** (`@extends`, `@section`, `@push`) |
+| Proteksi `strip_tags()` | **CSRF Protection** + **Validation** |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## ✨ Fitur Lengkap
 
-## Agentic Development
+### 🔐 Autentikasi & Autorisasi
+- Login username + password dengan **Google reCAPTCHA v2** (bisa di-enable/disable via `.env`)
+- **3 level hak akses** dengan custom middleware `check.level`
+- Redirect cerdas setelah login sesuai level user
+- Logout aman dengan CSRF (form POST)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 📦 Data Barang (Level 1 & 2)
+- CRUD lengkap (Tambah, Ubah, Hapus)
+- **Filter rentang tanggal**
+- **Pagination** (3 data per halaman)
+- **Grafik harga barang** dengan Chart.js
+- **Auto-generate barcode** dengan JsBarcode
 
-```bash
-composer require laravel/boost --dev
+### 👥 Data Pegawai (Level 1 & 3)
+- Tampilan data **read-only** (sesuai kebutuhan bisnis)
+- **Realtime update** tanpa refresh via AJAX polling setiap 2 detik
 
-php artisan boost:install
+### 🎓 Data Mahasiswa (Level 1 & 3)
+- CRUD lengkap dengan **upload foto + preview gambar**
+- **DataTables server-side** (search, sorting, pagination dari server)
+- Halaman detail mahasiswa
+- **Download Excel** (`.xlsx` — maatwebsite/excel)
+- **Download PDF** (barryvdh/laravel-dompdf)
+
+### 👤 Data Akun (Semua Level)
+- CRUD akun dengan **Bootstrap Modal**
+- Admin melihat semua akun; user biasa hanya melihat akunnya sendiri
+- Dropdown level hanya untuk admin
+- Password ter-enkripsi **bcrypt**
+
+### 📧 Kirim Email (Semua Level)
+- Form kirim email dengan **Laravel Mail** via SMTP Gmail
+- Validasi input + flash message sukses/gagal
+
+---
+
+## 🛠️ Tech Stack
+
+| Kategori | Teknologi |
+|---|---|
+| Backend | Laravel 13, PHP 8.3 |
+| Database | MySQL (Eloquent ORM) |
+| Frontend | AdminLTE 3, Bootstrap 4, jQuery |
+| Tabel | DataTables (server-side processing) |
+| Grafik | Chart.js |
+| Barcode | JsBarcode |
+| Export | maatwebsite/excel, barryvdh/laravel-dompdf |
+| Keamanan | Google reCAPTCHA v2, CSRF, bcrypt |
+| Email | Laravel Mail (SMTP Gmail) |
+| Hosting | InfinityFree (Apache, PHP 8.3) |
+
+---
+
+## 👥 Level Hak Akses
+
+| Level | Role | Akses |
+|---|---|---|
+| 1 | Admin | Semua halaman (barang, mahasiswa, pegawai, akun, email) |
+| 2 | Operator Barang | Barang, Akun, Email |
+| 3 | Operator Mahasiswa | Mahasiswa, Pegawai, Akun, Email |
+
+### 🔑 Akun Default
+
+| Username | Password | Level |
+|---|---|---|
+| `admin` | `admin123` | 1 (Admin) |
+| `opnbarang` | `operator123` | 2 (Operator Barang) |
+| `opnmahasiswa` | `operator123` | 3 (Operator Mahasiswa) |
+
+---
+
+## 🗄️ Struktur Database
+
+Database: `crud-php` (4 tabel)
+
+```sql
+akun       → id_akun, nama, username, email, password, level
+barang     → id_barang, nama, jumlah, harga, barcode, tanggal
+pegawai    → id_pegawai, nama, jabatan, email, telepon, alamat
+mahasiswa  → id_mahasiswa, nama, prodi, jk, telepon, alamat, email, foto
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 📁 Struktur Project
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+crud-laravel/
+├── app/
+│   ├── Exports/
+│   │   └── MahasiswaExport.php        # Export Excel
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Auth/LoginController.php
+│   │   │   ├── AkunController.php
+│   │   │   ├── BarangController.php
+│   │   │   ├── EmailController.php
+│   │   │   ├── MahasiswaController.php
+│   │   │   └── PegawaiController.php
+│   │   └── Middleware/
+│   │       └── CheckLevel.php          # Middleware hak akses
+│   ├── Models/
+│   │   ├── Akun.php
+│   │   ├── Barang.php
+│   │   ├── Mahasiswa.php
+│   │   └── Pegawai.php
+│   └── Rules/
+│       └── Recaptcha.php               # Validasi reCAPTCHA
+├── resources/views/
+│   ├── auth/login.blade.php
+│   ├── barang/ (index, create, edit)
+│   ├── pegawai/ (index, live)
+│   ├── mahasiswa/ (index, create, edit, show, pdf)
+│   ├── akun/index.blade.php
+│   ├── email/index.blade.php
+│   └── layouts/app.blade.php           # Layout master AdminLTE
+└── routes/web.php
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🚀 Instalasi & Menjalankan di Lokal
 
-## Security Vulnerabilities
+### Prasyarat
+- PHP ≥ 8.2 & Composer
+- MySQL (Laragon / XAMPP)
+- Extension PHP: `pdo_mysql`, `zip`, `gd`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Langkah Instalasi
 
-## License
+```bash
+# 1. Clone repository
+git clone https://github.com/USERNAME/crud-laravel.git
+cd crud-laravel
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 2. Install dependencies
+composer install
+
+# 3. Salin & konfigurasi environment
+copy .env.example .env        # Windows
+# cp .env.example .env        # Linux/Mac
+php artisan key:generate
+
+# 4. Import database
+#    - Buat database `crud-php` di phpMyAdmin
+#    - Import file SQL yang tersedia di folder /database
+
+# 5. Sesuaikan .env (DB, mail, recaptcha) lalu jalankan
+php artisan serve
+```
+
+Buka `http://127.0.0.1:8000` dan login dengan akun default.
+
+### Konfigurasi `.env` Penting
+
+```env
+APP_URL=http://127.0.0.1:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=crud-php
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Session & cache pakai file (tanpa tabel tambahan)
+SESSION_DRIVER=file
+CACHE_STORE=file
+
+# reCAPTCHA (false saat development di localhost)
+RECAPTCHA_ENABLED=false
+RECAPTCHA_SITE_KEY=site_key_kamu
+RECAPTCHA_SECRET_KEY=secret_key_kamu
+
+# Email SMTP Gmail (gunakan App Password)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_USERNAME=email_kamu@gmail.com
+MAIL_PASSWORD=app_password_kamu
+MAIL_ENCRYPTION=ssl
+```
+
+---
+
+## 🌐 Deployment (InfinityFree)
+
+Project ini sudah di-deploy dan live di **crud-rasyid.infinityfree.me**. Poin penting deployment di shared hosting tanpa SSH:
+
+1. Upload seluruh project ke `htdocs` (kecuali `.env` lokal).
+2. Buat `.htaccess` di root `htdocs` untuk mengarahkan request ke folder `public/`:
+   ```apache
+   <IfModule mod_rewrite.c>
+       RewriteEngine On
+       RewriteRule ^(.*)$ public/$1 [L]
+   </IfModule>
+   Options -Indexes
+   <FilesMatch "^\.">
+       Require all denied
+   </FilesMatch>
+   ```
+3. Buat `.env` production manual (`APP_DEBUG=false`, `CACHE_STORE=file`, `QUEUE_CONNECTION=sync`).
+4. Import database via phpMyAdmin hosting.
+5. Chmod 777: `storage/`, `bootstrap/cache/`, `public/assets/img/`.
+6. Daftarkan domain hosting ke Google reCAPTCHA admin.
+
+---
+
+## 📸 Screenshots
+
+| Login | Dashboard Barang |
+|---|---|
+| ![Login](screenshots/login.png) | ![Barang](screenshots/barang.png) |
+
+| Data Mahasiswa | Export Excel/PDF |
+|---|---|
+| ![Mahasiswa](screenshots/mahasiswa.png) | ![Export](screenshots/export.png) |
+
+> *Tambahkan folder `screenshots/` di repository lalu isi dengan gambar aplikasi.*
+
+---
+
+## 📝 Dokumentasi PKL
+
+Project ini dibuat sebagai tugas **Praktik Kerja Lapangan (PKL)**:
+
+- **Nama Peserta Didik:** Muhammad Al Rasyid
+- **Instansi:** SMK Telkom Lampung
+- **Pekerjaan/Proyek:** Migrasi & Deployment Aplikasi CRUD PHP Native ke Laravel 13
+
+### Pembelajaran Utama Selama PKL
+1. Migrasi arsitektur prosedural → MVC (Model, View, Controller)
+2. Penerapan ORM, middleware, validation, dan security best-practice
+3. Integrasi package pihak ketiga (Excel, PDF, reCAPTCHA, Mail)
+4. Deployment aplikasi Laravel ke shared hosting production
+5. Debugging perbedaan environment (case-sensitivity Windows vs Linux)
+
+---
+
+## 🙏 Credits
+
+- Template UI: [AdminLTE 3](https://adminlte.io)
+- Framework: [Laravel](https://laravel.com)
+- Package: [Laravel Excel](https://laravel-excel.com), [laravel-dompdf](https://github.com/barryvdh/laravel-dompdf)
+
+---
+
+## 📄 License
+
+Project ini dibuat untuk tujuan pembelajaran PKL. © 2026 Rasyid Teknologi.
